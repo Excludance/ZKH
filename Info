@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sample
+{
+    internal class Info
+    {
+        public int id { get; set; }
+
+        public int water { get; set; }
+
+        public int gas { get; set; }
+
+        public int light { get; set; }
+
+        public int heating { get; set; }
+
+        public int summ { get; set; }
+
+
+    public Info(int n, int p, int ye, int num)
+        {
+            this.water = n;
+            this.gas = p;
+            this.light = ye;
+            this.heating = num;
+            this.summ = n+p+ye+num;
+        }
+
+        public string GetInfo()
+        {
+            return $"id = {id} \nвода = {water} \nгаз = {gas} \nсвет = {light} \nотопление = {heating} \nсумма = {summ}";
+        }
+
+
+    }
+}
+
