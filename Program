@@ -1,0 +1,143 @@
+using Sample;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Samples;
+
+class Program
+{
+    static Servis servis; 
+    private static void Main()
+    {
+       servis = new Servis();
+
+        Console.WriteLine("Вас приветствует программа ЖКХ");
+
+        while (true)
+        {
+            Console.WriteLine("Введите номер команды");
+            PrintCommand();
+            string number = Console.ReadLine();
+
+            switch (number)
+            {
+                case "1": AddConsole(); break;
+                case "2": DeleteConsole(); break;
+                case "3": PrintList(); break;
+                case "4": GetPrintStateSumm(); break;
+                case "5": GetPrintSeparateService(); break;
+                case "6": Console.Clear(); break;
+                default: Console.WriteLine("Неверная команда"); break;
+            }
+        }
+
+
+        void PrintCommand()
+        {
+            Console.WriteLine("1 - Добавить запись");
+            Console.WriteLine("2 - Удалить запись");
+            Console.WriteLine("3 - Показать весь список");
+            Console.WriteLine("4 - Показать статистику оплаты за ком.услуги");
+            Console.WriteLine("5 - Показать отдельно цену за каждую услугу");
+            Console.WriteLine("6 - Очистить консоль");
+        }
+
+
+        void AddConsole()
+        {
+            Console.WriteLine("Добавить новую запись");
+
+            Console.WriteLine("Введите счет за воду");
+            int name = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Введите счет за газ");
+            int paro = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Введите счет за свет");
+            int year = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Введите счет за отопление");
+            int num = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Запись добавлена");
+            Info info = new Info(name, paro, year, num);
+
+            servis.Add(info);
+            servis.Save();
+        }
+        void DeleteConsole()
+        {
+            Console.WriteLine("Удалить запись");
+            PrintList();
+            Console.WriteLine("Введите id записи для удаления");
+
+            try
+            {
+                int id = Convert.ToInt32(Console.ReadLine());
+
+                if (servis.Delete(id) == true)
+                {
+                    Console.WriteLine("Запись удалена");
+                }
+                else
+                {
+                    Console.WriteLine("Запись не удалена");
+                    PrintList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+
+    private static void GetPrintSeparateService()
+    {
+        try
+        {
+            Console.WriteLine("За каждую услугу");
+            servis.GetPrintSeparateService();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine("Я усталь, сломался :( ");
+
+        }
+    }
+
+    static void GetPrintStateSumm()
+    {
+
+        try
+        {
+            Console.WriteLine("Статистика каждой услуги");
+            List<Info> list = servis.GetPrintStateSumm();
+
+            foreach (Info summ in list)
+            {
+                Console.WriteLine(summ.summ);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
+
+    static void PrintList()
+    {
+        Console.WriteLine("Список записей");
+
+        if (servis.inf.Count == 0)
+        {
+            Console.WriteLine("Нет записей");
+            return;
+        }
+
+        foreach (Info eat in servis.inf)
+        {
+            Console.WriteLine(eat.GetInfo());
+        }
+    }
+}
